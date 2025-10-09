@@ -16,11 +16,18 @@ public class SpawnManager : MonoBehaviour
     {
         while (true)
         {
-            int randomIndex = Random.Range(0, garbages.Count);
-            Instantiate(garbages[randomIndex],gameObject.transform.position,gameObject.transform.rotation);
+            Vector3 lastPositon = gameObject.transform.position;
             gameObject.transform.position = new Vector3(Random.Range(-8, 8), transform.position.y, transform.position.z);
 
-            yield return new WaitForSeconds(delay);
+            if (lastPositon != gameObject.transform.position)
+            {
+                lastPositon = gameObject.transform.position;
+                int randomIndex = Random.Range(0, garbages.Count);
+                Instantiate(garbages[randomIndex], gameObject.transform.position, gameObject.transform.rotation);
+
+                yield return new WaitForSeconds(delay);
+
+            }
         }
     }
 }
