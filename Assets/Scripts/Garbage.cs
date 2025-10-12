@@ -2,10 +2,7 @@ using UnityEngine;
 
 public class Garbage : MonoBehaviour
 {
-    private void Start()
-    {
-       // transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 180));
-    }
+    [SerializeField] private GameObject coin;
     private void Update()
     {
         if (transform.position.y < -5.70)
@@ -14,5 +11,10 @@ public class Garbage : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
        Destroy(gameObject);
+    }
+
+    public void SpawnCoin()
+    {
+        Instantiate(coin, transform.position, new Quaternion(0,0,0,0));
     }
 }

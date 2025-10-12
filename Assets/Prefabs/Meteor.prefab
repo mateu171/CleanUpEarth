@@ -139,6 +139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfebc1615b5d0ab499b1474db400336d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coin: {fileID: 8445984324955037575, guid: 82caf660f4378bd4690b63442a91e027, type: 3}
 --- !u!50 &688260852685811112
 Rigidbody2D:
   serializedVersion: 5
@@ -178,3 +179,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfebc1615b5d0ab499b1474db400336d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coin: {fileID: 8445984324955037575, guid: 82caf660f4378bd4690b63442a91e027, type: 3}

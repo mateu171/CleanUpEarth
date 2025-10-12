@@ -16,6 +16,7 @@ public class HoverInteraction : MonoBehaviour
 
     void Update()
     {
+        
         Debug.DrawRay(Camera.main.ScreenToWorldPoint(Input.mousePosition), Camera.main.transform.up * distance, Color.blue);
         if (Input.GetMouseButtonDown(0))
         {
@@ -26,6 +27,7 @@ public class HoverInteraction : MonoBehaviour
                 if (hit.collider.TryGetComponent<Garbage>(out Garbage garbage))
                 {
                     OnChangeScore?.Invoke();
+                    garbage.SpawnCoin();
                     Destroy(hit.collider.gameObject);
                 }
             }

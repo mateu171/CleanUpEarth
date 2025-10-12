@@ -6,6 +6,6 @@ public class EarthController : MonoBehaviour
 
     private void Update()
     {
-        transform.Rotate(0,0,10 * speedRotation);
+        transform.Rotate(0,0,10 * speedRotation * Time.deltaTime);
     }
 }
