@@ -3,9 +3,10 @@ using UnityEngine;
 public class EarthController : MonoBehaviour
 {
     [SerializeField] private float speedRotation = 0.02f;
+    [SerializeField] private int rotationSpeedZ = 10;
 
     private void Update()
     {
-        transform.Rotate(0,0,10 * speedRotation * Time.deltaTime);
+        transform.Rotate(0,0,rotationSpeedZ * speedRotation * Time.deltaTime);
     }
 }

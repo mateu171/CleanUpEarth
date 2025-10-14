@@ -5,29 +5,32 @@ using UnityEngine;
 public class HoverInteraction : MonoBehaviour
 {
     public static event Action OnChangeScore;
-    [SerializeField] private float distance;
+    public static event Action<Transform> OnDestroyGarbage;
+
+    private Camera _mainCamera;
 
     private int _layerMask;
 
     private void Awake()
     {
         _layerMask = LayerMask.GetMask("Garbage");
+        _mainCamera = Camera.main;
     }
 
     void Update()
     {
         
-        Debug.DrawRay(Camera.main.ScreenToWorldPoint(Input.mousePosition), Camera.main.transform.up * distance, Color.blue);
+        Debug.DrawRay(_mainCamera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, Color.blue);
         if (Input.GetMouseButtonDown(0))
         {
-            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Camera.main.transform.up, distance, _layerMask);
+            RaycastHit2D hit = Physics2D.Raycast(_mainCamera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, _layerMask);
 
             if (hit.collider != null)
             {
                 if (hit.collider.TryGetComponent<Garbage>(out Garbage garbage))
                 {
                     OnChangeScore?.Invoke();
-                    garbage.SpawnCoin();
+                    OnDestroyGarbage?.Invoke(hit.collider.transform);
                     Destroy(hit.collider.gameObject);
                 }
             }

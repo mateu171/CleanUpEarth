@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> garbages;
+    [SerializeField] private List<GameObject> garbageList;
     [SerializeField] private float delay;
+    [SerializeField] private float minX,maxX;
 
     private void Start()
     {
@@ -17,17 +18,22 @@ public class SpawnManager : MonoBehaviour
         while (true)
         {
             Vector3 lastPositon = gameObject.transform.position;
-            gameObject.transform.position = new Vector3(Random.Range(-8, 8), transform.position.y, transform.position.z);
+            var currentPosition = GetRandomSpawnPosition();
 
-            if (lastPositon != gameObject.transform.position)
+            if (lastPositon != currentPosition)
             {
-                lastPositon = gameObject.transform.position;
-                int randomIndex = Random.Range(0, garbages.Count);
-                Instantiate(garbages[randomIndex], gameObject.transform.position, gameObject.transform.rotation);
+                lastPositon = currentPosition;
+                int randomIndex = Random.Range(0, garbageList.Count);
+                Instantiate(garbageList[randomIndex], currentPosition, gameObject.transform.rotation);
 
                 yield return new WaitForSeconds(delay);
 
             }
         }
+    }
+
+    private Vector3 GetRandomSpawnPosition()
+    {
+        return new Vector3(Random.Range(minX, maxX), transform.position.y, transform.position.z);
     }
 }

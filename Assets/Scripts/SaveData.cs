@@ -4,6 +4,6 @@ using UnityEngine;
 [Serializable]
 public class SaveData
 {
-    public int heighestScore;
+    public int highestScore;
     public int coins;
 }
