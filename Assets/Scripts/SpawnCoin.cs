@@ -11,11 +11,11 @@ public class SpawnCoin : MonoBehaviour
 
     private void OnDisable()
     {
-        HoverInteraction.OnDestroyGarbage -= Spawn;
+        HoverInteraction.OnSpawnCoin -= Spawn;
     }
 
     private void OnEnable()
     {
-        HoverInteraction.OnDestroyGarbage += Spawn;
+        HoverInteraction.OnSpawnCoin += Spawn;
     }
 }

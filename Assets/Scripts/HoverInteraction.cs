@@ -5,7 +5,7 @@ using UnityEngine;
 public class HoverInteraction : MonoBehaviour
 {
     public static event Action OnChangeScore;
-    public static event Action<Transform> OnDestroyGarbage;
+    public static event Action<Transform> OnSpawnCoin;
 
     private Camera _mainCamera;
 
@@ -23,15 +23,15 @@ public class HoverInteraction : MonoBehaviour
         Debug.DrawRay(_mainCamera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, Color.blue);
         if (Input.GetMouseButtonDown(0))
         {
-            RaycastHit2D hit = Physics2D.Raycast(_mainCamera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, _layerMask);
+            RaycastHit2D hit = Physics2D.Raycast(_mainCamera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero,Mathf.Infinity, _layerMask);
 
             if (hit.collider != null)
             {
                 if (hit.collider.TryGetComponent<Garbage>(out Garbage garbage))
                 {
                     OnChangeScore?.Invoke();
-                    OnDestroyGarbage?.Invoke(hit.collider.transform);
-                    Destroy(hit.collider.gameObject);
+                    OnSpawnCoin?.Invoke(hit.collider.transform);
+                    garbage.DestroyGarbage();
                 }
             }
            

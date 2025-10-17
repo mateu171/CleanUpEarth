@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,8 +5,10 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private List<GameObject> garbageList;
-    [SerializeField] private float delay;
+    [SerializeField] private float spawnWait;
     [SerializeField] private float minX,maxX;
+    [SerializeField] private float waveWait;
+    [SerializeField] private int countSpawn;
 
     private void Start()
     {
@@ -17,18 +18,17 @@ public class SpawnManager : MonoBehaviour
     {
         while (true)
         {
-            Vector3 lastPositon = gameObject.transform.position;
-            var currentPosition = GetRandomSpawnPosition();
-
-            if (lastPositon != currentPosition)
+            for (int i = 0; i < countSpawn; i++)
             {
-                lastPositon = currentPosition;
                 int randomIndex = Random.Range(0, garbageList.Count);
-                Instantiate(garbageList[randomIndex], currentPosition, gameObject.transform.rotation);
+                Instantiate(garbageList[randomIndex], GetRandomSpawnPosition(), gameObject.transform.rotation);
 
-                yield return new WaitForSeconds(delay);
-
+                yield return new WaitForSeconds(Random.Range(0.5f, spawnWait));
             }
+
+            countSpawn++;
+            Debug.Log(countSpawn);
+            yield return new WaitForSeconds(waveWait);
         }
     }
 
