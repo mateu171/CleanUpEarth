@@ -10,8 +10,9 @@ public class Garbage : MonoBehaviour
 
     public static event Action<AudioSource> OnPlaySound;
 
-    private void Start()
+    public virtual void Start()
     {
+        GameObjectManager.Instance.Register(this.gameObject);
         audioSource = GetComponent<AudioSource>();
     }
     private void Update()
@@ -19,19 +20,22 @@ public class Garbage : MonoBehaviour
         if (transform.position.y < destroyY)
             DestroyGarbage();
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-       if (collision.gameObject.TryGetComponent<Player>(out Player currentPlayer))
-       {
-            Debug.Log("damage");
+        if (collision.gameObject.TryGetComponent<Player>(out Player currentPlayer))
+        {
             currentPlayer.TakeDamage(damage);
             DestroyGarbage();
-       }
+        }
     }
 
     public void DestroyGarbage()
     {
+        if (audioSource != null) 
         OnPlaySound?.Invoke(audioSource);
+
+        GameObjectManager.Instance.Unregister(this.gameObject);
         Destroy(gameObject);
     }
 }

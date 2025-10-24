@@ -9,7 +9,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Garbage
+  - Iteraction
   - Water
   - UI
   - 
@@ -41,6 +41,12 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UILayers
+    uniqueID: 76405419
+    locked: 0
+  - name: GameObjectsLayers
+    uniqueID: 1543509813
     locked: 0
   m_RenderingLayers:
   - Default

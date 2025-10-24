@@ -13,7 +13,7 @@ public class HoverInteraction : MonoBehaviour
 
     private void Awake()
     {
-        _layerMask = LayerMask.GetMask("Garbage");
+        _layerMask = LayerMask.GetMask("Iteraction");
         _mainCamera = Camera.main;
     }
 
@@ -32,6 +32,11 @@ public class HoverInteraction : MonoBehaviour
                     OnChangeScore?.Invoke();
                     OnSpawnCoin?.Invoke(hit.collider.transform);
                     garbage.DestroyGarbage();
+                }
+
+                if (hit.collider.TryGetComponent<IBoost>(out IBoost boost))
+                {
+                    boost.ActiveBoost();
                 }
             }
            

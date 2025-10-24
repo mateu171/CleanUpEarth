@@ -13,10 +13,12 @@ public class SoundManager : MonoBehaviour
     private void OnEnable()
     {
         Garbage.OnPlaySound += PlaySound;
+        Coin.OnPlaySound += PlaySound;
     }
 
     private void OnDisable()
     {
         Garbage.OnPlaySound -= PlaySound;
+        Coin.OnPlaySound -= PlaySound;
     }
 }

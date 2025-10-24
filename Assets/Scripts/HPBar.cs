@@ -10,9 +10,9 @@ public class HPBar : MonoBehaviour
         Bar = GetComponent<Image>();
         Player.OnDamage += ChangeHPBar;
     }
-    private void ChangeHPBar(int currentHP)
+    private void ChangeHPBar(float currentHP,float maxHP)
     {
-        Bar.fillAmount = currentHP / 100f;
+        Bar.fillAmount = (float)(currentHP / maxHP);
     }
 
     private void OnDisable()

@@ -3,38 +3,46 @@ using UnityEngine;
 
 public class SaveManager
 {
-    private readonly string _filePath;
+    private readonly string _filePath = Application.persistentDataPath + "/Save.encrypted";
 
+    private static SaveManager _instance;
+    public static SaveManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+                _instance = new SaveManager();
+
+            return _instance;
+        }
+    }
+
+    private SaveData _data;
+    public SaveData Data => _data;
     public SaveManager()
     {
-        _filePath = Application.persistentDataPath + "/Save.json";
-
-        if (!File.Exists(_filePath))
-            File.Create(_filePath).Close();
+        GetData();
     }
 
-    public void SaveData(SaveData saveData)
+    public void SaveData()
     {
-        string json = JsonUtility.ToJson(saveData);
-        using(var writer = new StreamWriter(_filePath))
-        {
-            writer.WriteLine(json);
-        }
+        string json = JsonUtility.ToJson(_data);
+        string encrypted = EncryptionHelper.Encrypt(json);
+        File.WriteAllText(_filePath,encrypted);
     }
 
-    public SaveData GetData()
+    public void GetData()
     {
-        string json = "";
-        using(var reader = new StreamReader(_filePath))
+       if (File.Exists(_filePath))
+       {
+            string encrypted = File.ReadAllText(_filePath);
+            string dectypted = EncryptionHelper.Decrypt(encrypted);
+            _data = JsonUtility.FromJson<SaveData>(dectypted);
+       }
+       else
         {
-            string line;
-            while ((line = reader.ReadLine()) != null)
-            {
-                json += line;
-            }
+            _data = new SaveData();
+            SaveData();
         }
-        if (string.IsNullOrEmpty(json))
-            return new SaveData();
-        return JsonUtility.FromJson<SaveData>(json);
     }
 }

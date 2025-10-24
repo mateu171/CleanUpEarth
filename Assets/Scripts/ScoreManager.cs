@@ -4,21 +4,19 @@ using UnityEngine;
 public class ScoreManager : MonoBehaviour
 {
     private int _score;
-    private int _highestScore;
-    private int _coins;
 
-    private SaveData _saveData;
-    private SaveManager _saveManager;
+    private int _highestScore;
+
+    private int _coins;
+    public int Coin { get { return _coins; } }
+    public int HighestScore { get { return _highestScore; } }
+
 
     public static event Action<int, int, int> OnChangeUI;
     private void Awake()
     {
-        _saveManager = new SaveManager();
-        _saveData = _saveManager.GetData();
-
-        _highestScore = _saveData.highestScore;
-        _coins = _saveData.coins;
-
+      _highestScore = SaveManager.Instance.Data.highestScore;
+        _coins = SaveManager.Instance.Data.coins;
     }
 
     private void UpdateScore()
@@ -29,6 +27,10 @@ public class ScoreManager : MonoBehaviour
         {
             _highestScore = _score;
         }
+
+        SaveManager.Instance.Data.coins = _coins;
+        SaveManager.Instance.Data.highestScore = _highestScore;
+        SaveManager.Instance.SaveData();
 
         NotifyUI();
     }
@@ -49,10 +51,12 @@ public class ScoreManager : MonoBehaviour
         HoverInteraction.OnChangeScore -= UpdateScore;
     }
 
-    private void OnApplicationQuit()
+    public void SetCoins(int value)
     {
-        _saveData.coins = _coins;
-        _saveData.highestScore = _highestScore;
-        _saveManager.SaveData(_saveData);
+        _coins = value;
+        SaveManager.Instance.Data.coins = _coins;
+        SaveManager.Instance.SaveData();
+        NotifyUI();
     }
+
 }

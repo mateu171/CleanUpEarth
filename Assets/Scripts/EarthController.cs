@@ -9,4 +9,9 @@ public class EarthController : MonoBehaviour
     {
         transform.Rotate(0,0,rotationSpeedZ * speedRotation * Time.deltaTime);
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Destroy(collision.gameObject);  
+    }
 }
