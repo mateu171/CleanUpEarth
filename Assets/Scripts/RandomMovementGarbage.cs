@@ -9,9 +9,9 @@ public class RandomMovementGarbage : Garbage
     private float startX;
     private float time;
 
-    private void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
         startX = transform.position.x;
     }
 

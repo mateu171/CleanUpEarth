@@ -1,20 +1,19 @@
 using System;
 using UnityEngine;
 
-public class Garbage : MonoBehaviour
+public class Garbage : GameEntity
 {
     [SerializeField] private float destroyY = -5.7f;
     [SerializeField] private int damage;
 
     private AudioSource audioSource;
 
-    public static event Action<AudioSource> OnPlaySound;
-
-    public virtual void Start()
+    protected override void Awake()
     {
-        GameObjectManager.Instance.Register(this.gameObject);
+        base.Awake();
         audioSource = GetComponent<AudioSource>();
     }
+
     private void Update()
     {
         if (transform.position.y < destroyY)
@@ -32,10 +31,8 @@ public class Garbage : MonoBehaviour
 
     public void DestroyGarbage()
     {
-        if (audioSource != null) 
-        OnPlaySound?.Invoke(audioSource);
-
-        GameObjectManager.Instance.Unregister(this.gameObject);
+        if (audioSource != null && SoundManager.Instance != null) 
+        SoundManager.Instance.PlaySound(audioSource);
         Destroy(gameObject);
     }
 }

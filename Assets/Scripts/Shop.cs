@@ -1,30 +1,46 @@
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class Shop : MonoBehaviour
 {
-    private int _currentMoney;
     [SerializeField] private TextMeshProUGUI moneyText;
     [SerializeField] private TextMeshProUGUI priceText;
     [SerializeField] private ScoreManager scoreManager;
+    [SerializeField] private List<AudioSource> audioSurceses = new List<AudioSource>();  
+    
+    [SerializeField] private Animator animator;
 
     private void Start()
     {
-        _currentMoney = SaveManager.Instance.Data.coins;
-        moneyText.text = _currentMoney.ToString();
+        moneyText.text = SaveManager.Instance.Data.coins.ToString();
     }
 
-    public void BuyHP()
+    public void TryBuyItem(int price, Action onPurchase)
     {
-        if (_currentMoney >= Convert.ToInt32(priceText.text))
-        {
-            SaveManager.Instance.Data.hp += 5;
-            _currentMoney -= Convert.ToInt32(priceText.text);
-            moneyText.text = _currentMoney.ToString();
-            scoreManager.SetCoins(_currentMoney);
-            SaveManager.Instance.SaveData();
-            
-        }
+       if (SaveManager.Instance.Data.coins >= price)
+       {
+            audioSurceses[0].Play();
+
+            SaveManager.Instance.Data.coins -= price;
+            onPurchase.Invoke();
+
+           SaveManager.Instance.SaveData();
+           moneyText.text = SaveManager.Instance.Data.coins.ToString();
+           scoreManager.SetCoins(SaveManager.Instance.Data.coins);
+
+       }
+       else
+       {
+            audioSurceses[1].Play();
+            animator.Play("CoinAnimation", -1, 0);
+       }
+    }
+
+    public void BuyHP(int price)
+    {
+        TryBuyItem(price, () =>SaveManager.Instance.Data.hp += 5);
     }
 }

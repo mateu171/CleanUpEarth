@@ -33,4 +33,10 @@ public class ButtonManager : MonoBehaviour
         game.SetActive(false);
         shop.SetActive(true);
     }
+
+    public void Resume()
+    {
+        GameObject.FindGameObjectWithTag("Pause").SetActive(false); 
+        Time.timeScale = 1f;
+    }
 }

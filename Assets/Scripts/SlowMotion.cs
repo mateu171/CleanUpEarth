@@ -1,15 +1,16 @@
 using System.Collections;
 using UnityEngine;
 
-public class SlowMotion : MonoBehaviour, IBoost
+public class SlowMotion : GameEntity, IBoost
 {
     [SerializeField] private float delay = 5;
 
     private SpriteRenderer spriteRenderer;
     private BoxCollider2D collider;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         GameObjectManager.Instance.Register(this.gameObject);
         spriteRenderer = GetComponent<SpriteRenderer>();
         collider = GetComponent<BoxCollider2D>();
@@ -28,9 +29,5 @@ public class SlowMotion : MonoBehaviour, IBoost
         yield return new WaitForSecondsRealtime(delay);
         Time.timeScale = 1;
         Destroy(gameObject);
-    }
-    private void OnDestroy()
-    {
-        GameObjectManager.Instance.Unregister(this.gameObject);
     }
 }

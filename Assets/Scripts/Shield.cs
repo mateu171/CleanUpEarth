@@ -1,13 +1,14 @@
 using System.Collections;
 using UnityEngine;
 
-public class Shield : MonoBehaviour
+public class Shield : GameEntity
 {
     [SerializeField] private float shieldDuration = 5;
     public static Shield Instance { get; private set; }
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Instance = this;
     }
     public void ActiveShield()

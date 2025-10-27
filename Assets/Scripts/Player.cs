@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public static event Action<float, float> OnDamage;
     public static event Action OnShowGameOver;
 
+    [SerializeField] private GameObject pause;
     public int MaxHP { get { return _maxHP; } }
 
     private void Start()
@@ -18,6 +19,14 @@ public class Player : MonoBehaviour
         _currentHP = _maxHP;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            pause.SetActive(true);
+            Time.timeScale = 0;
+        }
+    }
     public void TakeDamage(int damage)
     {
         _currentHP -= damage;
@@ -26,7 +35,7 @@ public class Player : MonoBehaviour
         {
             Time.timeScale = 0;
             GameObjectManager.Instance.DestroyAllGarbages();
-            OnShowGameOver.Invoke();
+            OnShowGameOver?.Invoke();
         }
         OnDamage?.Invoke(_currentHP, _maxHP);
     }

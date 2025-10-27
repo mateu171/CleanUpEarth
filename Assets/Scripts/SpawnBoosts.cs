@@ -10,9 +10,9 @@ public class SpawnBoosts : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(SpawnGarbage());
+        StartCoroutine(SpawnBoost());
     }
-    private IEnumerator SpawnGarbage()
+    private IEnumerator SpawnBoost()
     {
         yield return new WaitForSeconds(spawnWait);
 

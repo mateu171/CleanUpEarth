@@ -1,7 +1,8 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
-public class Coin : MonoBehaviour
+public class Coin : GameEntity
 {
     private GameObject target;
     [SerializeField] private float speed;
@@ -9,38 +10,30 @@ public class Coin : MonoBehaviour
     private const float checkOnDestroy = 0.1f;
     private AudioSource _audioSource;
 
-    public static event Action<AudioSource> OnPlaySound;
-
     private void Start()
     {
         target = GameObject.FindGameObjectWithTag("CoinImage");
         _audioSource = GetComponent<AudioSource>();
+        StartCoroutine(MoveCoinToTarget());
     }
 
-    private void Update()
+    private IEnumerator MoveCoinToTarget()
     {
-       transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
+        float dist = Vector3.Distance(transform.position, target.transform.position);
 
-        var dist = Vector3.Distance(transform.position, target.transform.position);
+        while (dist > checkOnDestroy)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
 
-       if (dist < checkOnDestroy)
-       {
-            DestroyCoin();
-       }
+            dist = Vector3.Distance(transform.position, target.transform.position);
+            yield return null;
+        }
+        DestroyCoin();
     }
    
     private void DestroyCoin()
     {
-        OnPlaySound?.Invoke(_audioSource);
+        SoundManager.Instance.PlaySound(_audioSource);
         Destroy(gameObject);
-    }
-
-    private void OnDestroy()
-    {
-        GameObjectManager.Instance.Unregister(this.gameObject);
-    }
-    private void Awake()
-    {
-        GameObjectManager.Instance.Register(this.gameObject);
     }
 }
