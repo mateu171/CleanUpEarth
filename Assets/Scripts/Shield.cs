@@ -1,14 +1,12 @@
 using System.Collections;
 using UnityEngine;
 
-public class Shield : GameEntity
+public class Shield : MonoBehaviour
 {
-    [SerializeField] private float shieldDuration = 5;
     public static Shield Instance { get; private set; }
 
-    protected override void Awake()
+    protected  void Awake()
     {
-        base.Awake();
         Instance = this;
     }
     public void ActiveShield()
@@ -18,6 +16,6 @@ public class Shield : GameEntity
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Destroy(collision.gameObject);
+      collision.gameObject.SetActive(false);
     }
 }

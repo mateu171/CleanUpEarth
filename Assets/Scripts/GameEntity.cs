@@ -2,6 +2,7 @@ using UnityEngine;
 
 public abstract class GameEntity : MonoBehaviour
 {
+    protected PoolForGarbage<GameEntity> _pool;
     protected virtual void OnDestroy()
     {
         if (GameObjectManager.Instance != null)
@@ -12,4 +13,16 @@ public abstract class GameEntity : MonoBehaviour
         if (GameObjectManager.Instance != null)
             GameObjectManager.Instance.Register(this.gameObject);
     }
+
+    public void SetPool(PoolForGarbage<GameEntity> pool)
+    {
+        _pool = pool;
+    }
+
+    public virtual void ActiveBoost()
+    {
+        if (_pool != null)
+        _pool.Release(this);
+    }
+
 }

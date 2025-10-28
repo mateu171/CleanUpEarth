@@ -8,8 +8,17 @@ public class SpawnBoosts : MonoBehaviour
     [SerializeField] private float spawnWait;
     [SerializeField] private float minX, maxX;
 
+    private List<PoolForGarbage<GameEntity>> _pools;
     private void Start()
     {
+        _pools = new List<PoolForGarbage<GameEntity>>();
+
+        foreach(var bt in boostsList)
+        {
+          var pool = new PoolForGarbage<GameEntity>(bt.GetComponent<GameEntity>(),transform,2);
+            _pools.Add(pool);
+        }
+
         StartCoroutine(SpawnBoost());
     }
     private IEnumerator SpawnBoost()
@@ -18,10 +27,13 @@ public class SpawnBoosts : MonoBehaviour
 
         while (true)
         {
-                int randomIndex = Random.Range(0, boostsList.Count);
-                Instantiate(boostsList[randomIndex], GetRandomSpawnPosition(), gameObject.transform.rotation);
-
-                yield return new WaitForSeconds(spawnWait);
+            int randomIndex = Random.Range(0, boostsList.Count);
+            var pool = _pools[randomIndex];
+            var boost = pool.Get();
+            boost.transform.position = GetRandomSpawnPosition();
+            boost.SetPool(pool);
+              
+            yield return new WaitForSeconds(spawnWait);
         }
     }
 

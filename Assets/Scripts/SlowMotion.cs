@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class SlowMotion : GameEntity, IBoost
+public class SlowMotion : GameEntity
 {
     [SerializeField] private float delay = 5;
 
@@ -15,7 +15,7 @@ public class SlowMotion : GameEntity, IBoost
         spriteRenderer = GetComponent<SpriteRenderer>();
         collider = GetComponent<BoxCollider2D>();
     }
-    public void ActiveBoost()
+    public override void ActiveBoost()
     {
         spriteRenderer.enabled = false;
         collider.enabled = false;
@@ -28,6 +28,6 @@ public class SlowMotion : GameEntity, IBoost
     {
         yield return new WaitForSecondsRealtime(delay);
         Time.timeScale = 1;
-        Destroy(gameObject);
+        base.ActiveBoost();
     }
 }

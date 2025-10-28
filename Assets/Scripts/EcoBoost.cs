@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class EcoBoost : MonoBehaviour, IBoost
+public class EcoBoost : GameEntity
 {
-    public void ActiveBoost()
+    public override void ActiveBoost()
     {
        GameObjectManager.Instance.DestroyAllGarbages();
-        Destroy(gameObject);
+       base.ActiveBoost();
     }
 
 }

@@ -34,7 +34,7 @@ public class HoverInteraction : MonoBehaviour
                     garbage.DestroyGarbage();
                 }
 
-                if (hit.collider.TryGetComponent<IBoost>(out IBoost boost))
+                if (hit.collider.TryGetComponent<GameEntity>(out GameEntity boost))
                 {
                     boost.ActiveBoost();
                 }

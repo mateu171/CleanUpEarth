@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,12 +30,8 @@ public class GameObjectManager : MonoBehaviour
 
     public void DestroyAllGarbages()
     {
-        if (allGarbages.Count == 0 || allGarbages == null) return;
-
-        var copyList = new List<GameObject>(allGarbages);
-        allGarbages.Clear();
-
-        foreach (GameObject g in copyList)
-            Destroy(g);
+        foreach (GameObject gm in allGarbages)
+            if (gm.activeInHierarchy)
+            gm.SetActive(false);
     }
 }
